@@ -1,0 +1,23 @@
+#pragma version 4
+
+// Put 2 and 3 on the stack.
+int 2
+int 3
+// Call the subroutine "add_plus_one"
+callsub add_plus_one
+
+// Return from the smart contract, the value on top of the stack will be 6.
+return
+
+// Subroutine to add two numbers together, then add one.
+add_plus_one:
+	// Add the two top values from the stack together.
+	+
+
+	// Add an additional 1 to the value on top of the stack.
+	int 1
+	+
+
+	// Return back to where the subroutine was original called.
+	retsub
+

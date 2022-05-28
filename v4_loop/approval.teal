@@ -1,0 +1,19 @@
+#pragma version 4
+
+// Start by putting a single 0 on the stack.
+int 0
+
+// We now enter the main_loop branch, which will add 1 to the value on top of
+// the stack until the value is greater or equal to 10.
+main_loop:
+	// Add 1 to the top value on the stack.
+	int 1
+	+
+
+	// Duplicate the new number and check if it's greater or equal than 10.
+	dup
+	int 10
+	>=
+	// If the value is not less than 10 it branches back through the main_loop.
+	bz main_loop
+

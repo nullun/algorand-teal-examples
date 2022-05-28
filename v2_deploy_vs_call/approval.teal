@@ -1,0 +1,19 @@
+#pragma version 2
+
+// Using the ApplicationID we can determine if the smart contract is being
+// deployed for the first time or being called as an existing smart contract.
+// When it's being deployed, the value is zero (0).
+// When it's being called after being deployed, the value is non-zero.
+// We simply branch to "deploy" if the ApplicationID is zero.
+txn ApplicationID
+bz deploy
+
+// Run when called.
+int 1
+return
+
+// Run during deployment.
+deploy:
+	int 1
+	return
+

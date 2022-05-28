@@ -1,0 +1,5 @@
+#pragma version 4
+
+// From the first transaction in the group, read scratch space 10.
+gload 0 10
+

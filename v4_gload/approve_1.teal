@@ -1,0 +1,8 @@
+#pragma version 4
+
+// Store the value 1337 in scratch space 10.
+int 1337
+store 10
+
+int 1
+

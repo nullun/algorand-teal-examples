@@ -6,12 +6,12 @@ Stepping through TEAL opcode-by-opcode is one of the best way to understand how 
 
 ```shell
 goal app create --creator $ADDR \
-	--approval-prog TEALv4/loop/approval.teal \
-	--clear-prog TEALv4/loop/clearstate.teal \
+	--approval-prog v4_loop/approval.teal \
+	--clear-prog v4_loop/clearstate.teal \
 	--global-byteslices 0 --global-ints 0 \
 	--local-byteslices 0 --local-ints 0 \
 	--dryrun-dump -o debug.dr
 
-tealdbg debug TEALv4/loop/approval.teal -d debug.dr --remote-debugging-port 9393
+tealdbg debug v4_loop/approval.teal -d debug.dr --remote-debugging-port 9393
 ```
 

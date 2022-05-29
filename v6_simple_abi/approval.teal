@@ -1,0 +1,77 @@
+#pragma version 6
+
+// Method signature for deploying the contract.
+txna ApplicationArgs 0
+method "deploy()void"
+==
+bnz method_deploy
+
+// Method signature for adding two numbers.
+txna ApplicationArgs 0
+method "add(uint64,uint64)uint64"
+==
+bnz method_add
+
+// Method signature for subtracting one number from another.
+txna ApplicationArgs 0
+method "subtract(uint64,uint64)uint64"
+==
+bnz method_subtract
+
+err
+
+// The deploy method should only be successful when it's being deployed to the
+// blockchain. Subsequent calls should be disallowed.
+method_deploy:
+	// Check the transaction call doesn't contain a non-zero ApplicationID.
+	txn ApplicationID
+	int 0
+	==
+	assert
+
+	int 1
+	return
+
+// Add method to add two numbers.
+method_add:
+	// Using the 1st and 2nd arguments, use btoi and add them together.
+	txna ApplicationArgs 1
+	btoi
+	txna ApplicationArgs 2
+	btoi
+	+
+
+	// The hex value 0x151f7c75 is the first four bytes of the SHA-512/256 hash
+	// of the ASCII string "return". This value is prefixed to our data and is
+	// how ARC4 compliant smart contracts encode and return values.
+	byte 0x151f7c75
+	swap
+	itob
+	concat
+	log
+
+	int 1
+	return
+
+// Subtract method to subtract one from the other.
+method_subtract:
+	// Using the 1st and 2nd arguments, use btoi and subtract the second from the
+	// first.
+	txna ApplicationArgs 1
+	btoi
+	txna ApplicationArgs 2
+	btoi
+	-
+
+	// The hex value 0x151f7c75 is the first four bytes of the SHA-512/256 hash
+	// of the ASCII string "return". This value is prefixed to our data and is
+	// how ARC4 compliant smart contracts encode and return values.
+	byte 0x151f7c75
+	swap
+	itob
+	concat
+	log
+
+	int 1
+	return
+

@@ -1,0 +1,5 @@
+#pragma version 5
+
+// Inner transactions cannot be used within the Clear State programs.
+
+int 1

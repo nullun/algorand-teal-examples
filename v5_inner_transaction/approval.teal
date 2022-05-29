@@ -1,0 +1,52 @@
+#pragma version 5
+
+// We won't be able to make any useful inner transactions until the smart
+// contract account contains some Algo for the minimum balance requirement.
+// However we don't reliably know what the smart contract address is until it
+// has been deployed. So this example requires multiple steps. First to deploy
+// the contract, then funding the smart contract account with Algo, and finally
+// to call it.
+
+// If the ApplicationID is zero, we're deploying the contract. If it's
+// non-zero, we're calling an existing one.
+txn ApplicationID
+bz deploy
+
+// Begin the inner transaction.
+itxn_begin
+
+// TEALv5 supports `pay`, `axfer`, `acfg`, and `afrz` transactions.
+// We want to send Algo, so will use a pay transaction.
+int pay
+itxn_field TypeEnum
+
+// Our inner transacation will be sent to the caller of this smart contract.
+txn Sender
+itxn_field Receiver
+
+// We will set the amount to be sent equal to two times the minimum transaction
+// fee. Essentially "refunding" the caller the cost of the call.
+global MinTxnFee
+int 2
+*
+itxn_field Amount
+
+// By setting the inner transaction's Fee field to zero, we're utilising
+// fee-pooling and requiring that either this application call, or another
+// transaction in the group covers the cost of this inner transaction.
+int 0
+itxn_field Fee
+
+// Submit the inner transaction.
+itxn_submit
+
+// Note that we could remove these two lines and instead fall-through into the
+// "deploy" branch as an alternative and more efficient way to end this call.
+int 1
+return
+
+// Deploy the smart contract.
+deploy:
+	int 1
+	return
+

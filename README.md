@@ -6,7 +6,7 @@ Most of the folders will have a `demo.sh` script to run through the contract exa
 
 ## Using tealdbg
 
-Stepping through TEAL opcode-by-opcode is one of the best way to understand how it works. To do this we use the `tealdbg` tool which comes with [go-algorand](https://github.com/algorand/go-algorand). Use the following instructions as a quick guide on how to use it.
+Stepping through TEAL opcode-by-opcode is one of the best ways to understand how it works. To do this we use the `tealdbg` tool which comes with [go-algorand](https://github.com/algorand/go-algorand). Use the following instructions as a quick guide on how to use it.
 
 ```shell
 goal app create --creator $ADDR \

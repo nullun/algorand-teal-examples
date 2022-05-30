@@ -1,0 +1,29 @@
+{
+	"name": "V6 Simple ABI",
+	"methods": [
+		{
+			"name": "deploy",
+			"desc": "Deploy the smart contract",
+			"args": [],
+			"returns": {"type": "void"}
+		},
+		{
+			"name": "add",
+			"desc": "Add two numbers together",
+			"args": [
+				{"type": "uint64"},
+				{"type": "uint64"}
+			],
+			"returns": {"type": "uint64"}
+		},
+		{
+			"name": "subtract",
+			"desc": "Subtract one number from another",
+			"args": [
+				{"type": "uint64"},
+				{"type": "uint64"}
+			],
+			"returns": {"type": "uint64"}
+		}
+	]
+}

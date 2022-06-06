@@ -1,0 +1,48 @@
+{
+  "accounts": [
+    {
+      "address": "JAQA7FTVZP2ZK32Z7HEVIL5XJZEMTEFV7FRI6BJAT7VUQB6GA7NEBN4KS4",
+      "amount": 0,
+      "amount-without-pending-rewards": 0,
+      "min-balance": 100000,
+      "pending-rewards": 0,
+      "reward-base": 30,
+      "rewards": 0,
+      "round": 1224,
+      "status": "Offline",
+      "total-apps-opted-in": 0,
+      "total-assets-opted-in": 0,
+      "total-created-apps": 0,
+      "total-created-assets": 0
+    }
+  ],
+  "apps": [
+    {
+      "id": 1380011588,
+      "params": {
+        "approval-program": "BoEqgbkKSgxNQw==",
+        "clear-state-program": "BoEB",
+        "creator": "JAQA7FTVZP2ZK32Z7HEVIL5XJZEMTEFV7FRI6BJAT7VUQB6GA7NEBN4KS4"
+      }
+    }
+  ],
+  "latest-timestamp": 1654515387,
+  "protocol-version": "future",
+  "round": 1224,
+  "sources": null,
+  "txns": [
+    {
+  "txn": {
+    "apap": "BoEqgbkKSgxNQw==",
+    "apsu": "BoEB",
+    "fee": 1000,
+    "fv": 1225,
+    "gh": "dJCTGaWC0lTXc+rdkvLAxAGE5OiR7ybwyA3EIsqhzLE=",
+    "lv": 2225,
+    "note": "2BOoNjbNfPk=",
+    "snd": "JAQA7FTVZP2ZK32Z7HEVIL5XJZEMTEFV7FRI6BJAT7VUQB6GA7NEBN4KS4",
+    "type": "appl"
+  }
+}
+  ]
+}

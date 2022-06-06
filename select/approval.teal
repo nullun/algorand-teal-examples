@@ -1,0 +1,26 @@
+#pragma version 6
+
+// select
+// Opcode: 0x4d
+// Stack: ..., A, B, C → ..., A or B
+// selects one of two values based on top-of-stack: B if C != 0, else A
+// Availability: v3
+
+// Using select to choose the larger of two values.
+
+// Place two values on the stack, these will be positions A and B.
+int 42
+int 1337
+// Our third argument C will be the result of an expression to identify if A is
+// smaller than B. For this we will duplicate both values, and perform a  "less
+// than" operator. In this example 42 is less than 1337, so the result
+// is a 1 in the C position.
+dup2
+<
+// We then use select which checks the value of C and if it's 0 then A is left
+// on the stack, otherwise B is left on the stack. In this example C is 1, so
+// our larger number 1337 (B) is left on the stack.
+select
+
+return
+

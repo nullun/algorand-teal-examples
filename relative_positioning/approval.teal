@@ -1,0 +1,28 @@
+#pragma version 6
+
+// Previous transaction must have same sender
+txn GroupIndex
+int 1
+-
+gtxns Sender
+txn Sender
+==
+assert
+
+// Previous transacation must be a payment or asset transfer transaction
+txn GroupIndex
+int 1
+-
+gtxns TypeEnum
+dup
+int pay
+==
+swap
+int axfer
+==
+||
+assert
+
+int 1
+return
+

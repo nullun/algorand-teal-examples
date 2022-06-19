@@ -3,6 +3,7 @@
 set -e -u -x -o pipefail
 
 GOAL="goal"
+TDBG="tealdbg"
 ADDR="JAQA7FTVZP2ZK32Z7HEVIL5XJZEMTEFV7FRI6BJAT7VUQB6GA7NEBN4KS4"
 
 ${GOAL} app create --creator ${ADDR} \
@@ -13,5 +14,6 @@ ${GOAL} app create --creator ${ADDR} \
 	--dryrun-dump \
 	-o demo.dr
 
-tealdbg debug -d demo.dr --remote-debugging-port 9393
+${TDBG} debug -d demo.dr --remote-debugging-port 9393
+rm demo.dr
 

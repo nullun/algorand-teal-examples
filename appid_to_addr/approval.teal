@@ -1,0 +1,15 @@
+#pragma version 6
+
+// Prefix
+byte "appID"
+// Provide an integer you want to calculate the address for
+txn ApplicationArgs 0
+concat
+sha512_256
+// The 32-byte address will now be on top of the stack. In smart contracts you
+// wouldn't typically use the 58-byte checksummed version.
+pop
+
+int 1
+return
+

@@ -1,4 +1,4 @@
-# itxn cloner
+# itxn template cloner
 
 This demo contains two smart contracts, the first is our reference smart
 contract (the target), and the second is the cloner. It essentially allows

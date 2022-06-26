@@ -1,0 +1,87 @@
+#pragma version 6
+
+// Deploy?
+txn ApplicationID
+bz handle_deploy
+
+// NoOp?
+txn OnCompletion
+int NoOp
+==
+bnz handle_noop
+
+// Update or Delete?
+txn OnCompletion
+int UpdateApplication
+==
+txn OnCompletion
+int DeleteApplication
+==
+||
+bnz handle_update_or_delete
+
+// Reject
+err
+
+// NoOp
+handle_noop:
+	txna ApplicationArgs 0
+	byte "clone"
+	==
+	bnz noop_clone
+
+	err
+
+// Update or Delete
+handle_update_or_delete:
+	txn Sender
+	global CreatorAddress
+	==
+	return
+
+// Deploy
+handle_deploy:
+	int 1
+	return
+
+// NoOp Calls
+// Deploy a new smart contract using the provided one's Approval & ClearState programs.
+noop_clone:
+	itxn_begin
+
+	int appl
+	itxn_field TypeEnum
+
+	int NoOp
+	itxn_field OnCompletion
+
+	// Use reference Approval
+	txna Applications 1
+	app_params_get AppApprovalProgram
+	assert
+	itxn_field ApprovalProgram
+
+	// Use reference ClearState
+	txna Applications 1
+	app_params_get AppClearStateProgram
+	assert
+	itxn_field ClearStateProgram
+
+	// I know the reference app only uses global byteslices, but you'd maybe want to reference all of them.
+	txna Applications 1
+	app_params_get AppGlobalNumByteSlice
+	itxn_field GlobalNumByteSlice
+
+	// Provide the account_owner as the first argument.
+	txn Sender
+	itxn_field ApplicationArgs
+
+	// Force deployer to pay the fees
+	int 0
+	itxn_field Fee
+
+	itxn_submit
+
+	int 1
+	return
+

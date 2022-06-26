@@ -1,0 +1,23 @@
+#pragma version 6
+
+txn ApplicationID
+bz handle_deploy
+
+// If you're the account owner you can do anything
+txn Sender
+byte "account_owner"
+app_global_get
+==
+assert
+
+int 1
+return
+
+handle_deploy:
+	byte "account_owner"
+	txna ApplicationArgs 0
+	app_global_put
+
+	int 1
+	return
+

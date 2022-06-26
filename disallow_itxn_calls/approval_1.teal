@@ -1,0 +1,21 @@
+#pragma version 6
+
+// Deploy as application
+txn ApplicationID
+bz deploy
+
+// Disallow the caller to have an ID
+global CallerApplicationID
+!
+assert
+
+// Approve transaction
+// Note: We could remove these lines and fall through into the deploy code
+int 1
+return
+
+// Deployment branch
+deploy:
+	int 1
+	return
+

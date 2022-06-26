@@ -1,0 +1,44 @@
+#pragma version 6
+
+// Deploy
+txn ApplicationID
+bz deploy
+
+// If there's foreign apps, just approve and exit.
+txn NumApplications
+bz skip_itxn
+
+// Inner Transaction to target application.
+itxn_begin
+
+// Application Call
+int appl
+itxn_field TypeEnum
+
+// NoOp call
+int NoOp
+itxn_field OnCompletion
+
+// First argument must reference the application.
+txn ApplicationArgs 0
+btoi
+txnas Applications
+itxn_field ApplicationID
+
+// Force sender to cover the inner transaction fee.
+int 0
+itxn_field Fee
+
+itxn_submit
+
+// If we're here, we can assume the inner transaction was successful.
+// Approve the transaction.
+skip_itxn:
+int 1
+return
+
+// Deployment branch
+deploy:
+	int 1
+	return
+

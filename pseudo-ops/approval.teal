@@ -1,0 +1,60 @@
+#pragma version 6
+
+byte base64 SGVsbG8sIFdvcmxkIQ==
+byte "Hello, World!"
+==
+assert
+
+byte b64 SGVsbG8sIFdvcmxkIQ==
+byte "Hello, World!"
+==
+assert
+
+byte base64(SGVsbG8sIFdvcmxkIQ==)
+byte "Hello, World!"
+==
+assert
+
+byte b64(SGVsbG8sIFdvcmxkIQ==)
+byte "Hello, World!"
+==
+assert
+
+byte base32 JBSWY3DPFQQFO33SNRSCC===
+byte "Hello, World!"
+==
+assert
+
+byte b32 JBSWY3DPFQQFO33SNRSCC===
+byte "Hello, World!"
+==
+assert
+
+byte base32(JBSWY3DPFQQFO33SNRSCC===)
+byte "Hello, World!"
+==
+assert
+
+byte b32(JBSWY3DPFQQFO33SNRSCC===)
+byte "Hello, World!"
+==
+assert
+
+byte 0x48656c6c6f2c20576f726c6421
+byte "Hello, World!"
+==
+assert
+
+byte "\x48\x65\x6c\x6c\x6f\x2c\x20\x57\x6f\x72\x6c\x64\x21"
+byte "Hello, World!"
+==
+assert
+
+byte "Hello, World!"
+byte "Hello, World!"
+==
+assert
+
+int 1
+return
+

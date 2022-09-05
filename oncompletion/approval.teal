@@ -1,0 +1,69 @@
+#pragma version 6
+
+// Is this a deployment transaction?
+txn ApplicationID
+bz deploy
+
+// Is this a NoOp transaction?
+txn OnCompletion
+int NoOp
+==
+bnz handle_noop
+
+// Is this an OptIn transaction?
+txn OnCompletion
+int OptIn
+==
+bnz handle_optin
+
+// Is this a CloseOut transaction?
+txn OnCompletion
+int CloseOut
+==
+bnz handle_closeout
+
+// Is this an Update or Delete transaction?
+txn OnCompletion
+int UpdateApplication
+==
+txn OnCompletion
+int DeleteApplication
+==
+||
+bnz handle_update_or_delete
+
+// Failure
+err
+
+// Deploy if NoOp
+deploy:
+  txn OnCompletion
+  int NoOp
+  ==
+  return
+
+// NoOp branch
+handle_noop:
+  int 1
+  return
+
+// OptIn branch
+handle_optin:
+  int 1
+  return
+
+// CloseOut branch
+handle_closeout:
+  int 1
+  return
+
+// Update or Delete branch
+handle_update_or_delete:
+  // Is the sender the original app creator?
+  // We only allow the creator address to
+  // update or delete the smart contract
+  txn Sender
+  global CreatorAddress
+  ==
+  return
+

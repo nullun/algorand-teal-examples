@@ -1,0 +1,118 @@
+#pragma version 6
+
+txna ApplicationArgs 0
+method "deploy()void"
+==
+bnz deploy
+
+txna ApplicationArgs 0
+method "uint64_demo(uint64)uint64"
+==
+bnz uint64_demo
+
+txna ApplicationArgs 0
+method "string_demo(string)string"
+==
+bnz string_demo
+
+txna ApplicationArgs 0
+method "bool_demo(bool)bool"
+==
+bnz bool_demo
+
+txna ApplicationArgs 0
+method "uint8_demo(uint8)uint8"
+==
+bnz uint8_demo
+
+txna ApplicationArgs 0
+method "uint16_demo(uint16)uint16"
+==
+bnz uint16_demo
+
+err
+
+deploy:
+  txn ApplicationID
+  !
+  return
+
+uint64_demo:
+  txna ApplicationArgs 1
+  store 0
+
+  byte 0x151f7c75
+  load 0
+  concat
+  log
+
+  int 1
+  return
+
+string_demo:
+  txna ApplicationArgs 1
+  store 0
+
+  byte 0x151f7c75
+  load 0
+  concat
+  log
+
+  int 1
+  return
+
+bool_demo:
+  txna ApplicationArgs 1
+  store 0
+
+  byte 0x151f7c75
+  load 0
+  concat
+  log
+
+  int 1
+  return
+
+uint8_demo:
+  txna ApplicationArgs 1
+  int 0
+  getbyte
+  store 0
+
+  // Return
+  byte 0x151f7c75
+
+  // Create and set uint8
+  byte 0x00
+  int 0
+  load 0
+  setbyte
+
+  concat
+  log
+
+  int 1
+  return
+
+uint16_demo:
+  txna ApplicationArgs 1
+  int 0
+  extract_uint16
+  store 0
+
+  // Return
+  byte 0x151f7c75
+
+  // Return uint16
+  load 0
+  // Convert to bytes (uint64)
+  itob
+  // Only use the last 2 bytes
+  extract 6 0
+
+  concat
+  log
+
+  int 1
+  return
+

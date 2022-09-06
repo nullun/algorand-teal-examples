@@ -29,7 +29,7 @@ ${GOAL} app method \
   --app-id ${APP_ID} \
   --from ${ACCT1} \
   --method "uint64_demo(uint64)uint64" \
-  --arg 1337
+  --arg 18446744073709551615
 
 # String Demo
 ${GOAL} app method \
@@ -50,13 +50,19 @@ ${GOAL} app method \
   --app-id ${APP_ID} \
   --from ${ACCT1} \
   --method "uint8_demo(uint8)uint8" \
-  --arg 5
+  --arg 255
 
 # Uint16 Demo
 ${GOAL} app method \
   --app-id ${APP_ID} \
   --from ${ACCT1} \
   --method "uint16_demo(uint16)uint16" \
-  --arg 260 \
-  --dryrun-dump
+  --arg 65535
+
+# Uint32 Demo
+${GOAL} app method \
+  --app-id ${APP_ID} \
+  --from ${ACCT1} \
+  --method "uint32_demo(uint32)uint32" \
+  --arg 4294967295
 

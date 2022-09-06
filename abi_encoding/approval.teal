@@ -30,6 +30,11 @@ method "uint16_demo(uint16)uint16"
 ==
 bnz uint16_demo
 
+txna ApplicationArgs 0
+method "uint32_demo(uint32)uint32"
+==
+bnz uint32_demo
+
 err
 
 deploy:
@@ -109,6 +114,28 @@ uint16_demo:
   itob
   // Only use the last 2 bytes
   extract 6 0
+
+  concat
+  log
+
+  int 1
+  return
+
+uint32_demo:
+  txna ApplicationArgs 1
+  int 0
+  extract_uint32
+  store 0
+
+  // Return
+  byte 0x151f7c75
+
+  // Return uint32
+  load 0
+  // Convert to bytes (uint64)
+  itob
+  // Only use the last 4 bytes
+  extract 4 0
 
   concat
   log

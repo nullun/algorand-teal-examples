@@ -35,6 +35,16 @@ method "uint32_demo(uint32)uint32"
 ==
 bnz uint32_demo
 
+txna ApplicationArgs 0
+method "byte_demo(byte)byte"
+==
+bnz byte_demo
+
+txna ApplicationArgs 0
+method "tuple_demo((string,uint8))string"
+==
+bnz tuple_demo
+
 err
 
 deploy:
@@ -142,4 +152,84 @@ uint32_demo:
 
   int 1
   return
+
+byte_demo:
+  txna ApplicationArgs 1
+  store 0
+
+  // Return
+  byte 0x151f7c75
+  load 0
+  concat
+  log
+
+  int 1
+  return
+
+tuple_demo:
+  // Get length of string
+  txna ApplicationArgs 1
+  int 0
+  extract_uint16
+  store 0
+
+  txna ApplicationArgs 1
+  load 0
+  int 1
+  -
+  getbyte
+  store 1
+
+  txna ApplicationArgs 1
+  load 0
+  extract_uint16
+  store 2
+
+  txna ApplicationArgs 1
+  int 5
+  load 2
+  extract3
+  store 3
+
+  int 0
+  store 4
+  byte ""
+  store 5
+  loop:
+    load 4
+    load 1
+    >=
+    bnz continue
+
+    load 5
+    load 3
+    concat
+    store 5
+
+    load 4
+    int 1
+    +
+    store 4
+
+    b loop
+  continue:
+
+  // Return
+  byte 0x151f7c75
+  byte 0x0000
+  int 1
+  load 5
+  len
+  setbyte
+  load 5
+  concat
+  concat
+  log
+
+  int 1
+  return
+
+// Subroutine
+explode_tuple:
+  retsub
 

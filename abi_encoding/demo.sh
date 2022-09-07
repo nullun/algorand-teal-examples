@@ -66,3 +66,17 @@ ${GOAL} app method \
   --method "uint32_demo(uint32)uint32" \
   --arg 4294967295
 
+# Byte Demo
+${GOAL} app method \
+  --app-id ${APP_ID} \
+  --from ${ACCT1} \
+  --method "byte_demo(byte)byte" \
+  --arg 255
+
+# Tuple Demo
+${GOAL} app method \
+  --app-id ${APP_ID} \
+  --from ${ACCT1} \
+  --method "tuple_demo((string,uint8))string" \
+  --arg '["TEST",3]'
+

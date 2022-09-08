@@ -45,6 +45,11 @@ method "tuple_demo((string,uint8))string"
 ==
 bnz tuple_demo
 
+txna ApplicationArgs 0
+method "byte_array_demo(byte[])byte[]"
+==
+bnz byte_array_demo
+
 err
 
 deploy:
@@ -229,6 +234,37 @@ tuple_demo:
   len
   setbyte
   load 5
+  concat
+  concat
+  log
+
+  int 1
+  return
+
+byte_array_demo:
+  // Get length of array
+  txna ApplicationArgs 1
+  int 0
+  extract_uint16
+  store 0
+
+  // Get bytes
+  txna ApplicationArgs 1
+  int 2
+  load 0
+  int 2
+  +
+  substring3
+  store 1
+
+  // Return
+  byte 0x151f7c75
+  byte 0x0000
+  int 1
+  load 1
+  len
+  setbyte
+  load 1
   concat
   concat
   log

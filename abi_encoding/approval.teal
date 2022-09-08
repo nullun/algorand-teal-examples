@@ -166,13 +166,17 @@ byte_demo:
   int 1
   return
 
+// (string,uint8)
+// string is dynamic so is stored last
+// uint8 is static so is stored first
 tuple_demo:
-  // Get length of string
+  // Get length of uint8
   txna ApplicationArgs 1
   int 0
   extract_uint16
   store 0
 
+  // Get value of uint8
   txna ApplicationArgs 1
   load 0
   int 1
@@ -180,17 +184,20 @@ tuple_demo:
   getbyte
   store 1
 
+  // Get length of string
   txna ApplicationArgs 1
   load 0
   extract_uint16
   store 2
 
+  // Get string
   txna ApplicationArgs 1
   int 5
   load 2
   extract3
   store 3
 
+  // Repeat string N times.
   int 0
   store 4
   byte ""
@@ -228,8 +235,4 @@ tuple_demo:
 
   int 1
   return
-
-// Subroutine
-explode_tuple:
-  retsub
 

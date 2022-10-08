@@ -1,0 +1,38 @@
+#pragma version 8
+
+// switch target ...
+// Opcode: 0x8d {uint8 branch count} [{int16 branch offset, big-endian}, ...]
+// Stack: ..., A: uint64 &rarr; ...
+// branch to the Ath label. Continue at following instruction if index A exceeds the number of labels.
+// Availability: v8
+
+// Using switch to choose between multiple branches.
+
+// Place a value on the stack, this will identify which index to take.
+int 3
+switch zero one two three four
+
+// Different branches
+zero:
+  byte "Zero"
+  b continue
+one:
+  byte "One"
+  b continue
+two:
+  byte "Two"
+  b continue
+three:
+  byte "Three"
+  b continue
+four:
+  byte "Four"
+  b continue
+
+// Log and finish
+continue:
+  log
+
+  int 1
+  return
+

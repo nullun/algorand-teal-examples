@@ -1,0 +1,33 @@
+#pragma version 8
+
+// To see a more advanced use of macros, checkout the abi_encoding example.
+
+// Create a simple macro which replaces "COUNTER" with the value 0.
+#define COUNTER 0
+
+// Macros to increment or decrement the top value of the stack.
+#define inc int 1; +
+#define dec int 1; -
+
+// Store value in COUNTER (scratch space 0)
+int 5
+store COUNTER
+
+// Begin loop
+loop:
+  // End if the value of COUNTER is 0.
+  load COUNTER
+  bz end
+
+  // Decrement COUNTER by 1.
+  load COUNTER
+  dec
+  store COUNTER
+
+  // Next iteration.
+  b loop
+
+end:
+  int 1
+  return
+

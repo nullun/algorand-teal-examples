@@ -1,54 +1,58 @@
-#pragma version 6
+#pragma version 8
 
-txna ApplicationArgs 0
+// Uints
+#define abi-decode-u8 int 0; getbyte
+#define abi-encode-u8 itob; extract 7 1
+
+#define abi-decode-u16 int 0; extract_uint16
+#define abi-encode-u16 itob; extract 6 2
+
+#define abi-decode-u32 int 0; extract_uint32
+#define abi-encode-u32 itob; extract 4 4
+
+#define abi-decode-u64 int 0; extract_uint64
+#define abi-encode-u64 itob; extract 0 8
+
+// Bytes
+#define abi-decode-byte int 0; getbyte
+#define abi-encode-byte byte 0x00; swap; int 0; swap; setbyte
+
+#define abi-decode-bytes dup; abi-decode-u16; int 2; swap; extract3
+#define abi-encode-bytes dup; len; abi-encode-u16; swap; concat
+
+#define abi-decode-string abi-decode-bytes
+#define abi-encode-string abi-encode-bytes
+
+// Uint Lists
+#define abi-list-u8-get int 1; *; getbyte
+#define abi-list-u8-push abi-encode-u8; concat
+
+#define abi-list-u16-get int 2; *; extract_uint16
+#define abi-list-u16-push abi-encode-u16; concat
+
+#define abi-list-u32-get int 4; *; extract_uint32
+#define abi-list-u32-push abi-encode-u32; concat
+
+#define abi-list-u64-get int 8; *; extract_uint64
+#define abi-list-u64-push abi-encode-u64; concat
+
+// Misc
+#define abi-log byte 0x151f7c75; swap; concat; log
+
 method "deploy()void"
-==
-bnz deploy
-
-txna ApplicationArgs 0
 method "uint64_demo(uint64)uint64"
-==
-bnz uint64_demo
-
-txna ApplicationArgs 0
 method "string_demo(string)string"
-==
-bnz string_demo
-
-txna ApplicationArgs 0
 method "bool_demo(bool)bool"
-==
-bnz bool_demo
-
-txna ApplicationArgs 0
 method "uint8_demo(uint8)uint8"
-==
-bnz uint8_demo
-
-txna ApplicationArgs 0
 method "uint16_demo(uint16)uint16"
-==
-bnz uint16_demo
-
-txna ApplicationArgs 0
 method "uint32_demo(uint32)uint32"
-==
-bnz uint32_demo
-
-txna ApplicationArgs 0
 method "byte_demo(byte)byte"
-==
-bnz byte_demo
-
-txna ApplicationArgs 0
 method "tuple_demo((string,uint8))string"
-==
-bnz tuple_demo
-
-txna ApplicationArgs 0
 method "byte_array_demo(byte[])byte[]"
-==
-bnz byte_array_demo
+method "uint8_list_demo((uint8,uint8,uint8))(uint8,uint8,uint8)"
+method "uint32_list_demo((uint32,uint32))(uint32,uint32)"
+txna ApplicationArgs 0
+match deploy uint64_demo string_demo bool_demo uint8_demo uint16_demo uint32_demo byte_demo tuple_demo byte_array_demo uint8_list_demo uint32_list_demo
 
 err
 
@@ -57,116 +61,89 @@ deploy:
   !
   return
 
-uint64_demo:
-  txna ApplicationArgs 1
-  store 0
-
-  byte 0x151f7c75
-  load 0
-  concat
-  log
-
-  int 1
-  return
-
-string_demo:
-  txna ApplicationArgs 1
-  store 0
-
-  byte 0x151f7c75
-  load 0
-  concat
-  log
-
-  int 1
-  return
-
 bool_demo:
   txna ApplicationArgs 1
   store 0
 
-  byte 0x151f7c75
   load 0
-  concat
-  log
+  abi-log
 
   int 1
   return
 
 uint8_demo:
   txna ApplicationArgs 1
-  int 0
-  getbyte
+  abi-decode-u8
   store 0
 
-  // Return
-  byte 0x151f7c75
-
-  // Create and set uint8
-  byte 0x00
-  int 0
+  // Return ABI Uint8
   load 0
-  setbyte
-
-  concat
-  log
+  abi-encode-u8
+  abi-log
 
   int 1
   return
 
 uint16_demo:
   txna ApplicationArgs 1
-  int 0
-  extract_uint16
+  abi-decode-u16
   store 0
 
-  // Return
-  byte 0x151f7c75
-
-  // Return uint16
+  // Return ABI Uint16
   load 0
-  // Convert to bytes (uint64)
-  itob
-  // Only use the last 2 bytes
-  extract 6 0
-
-  concat
-  log
+  abi-encode-u16
+  abi-log
 
   int 1
   return
 
 uint32_demo:
   txna ApplicationArgs 1
-  int 0
-  extract_uint32
+  abi-decode-u32
   store 0
 
-  // Return
-  byte 0x151f7c75
-
-  // Return uint32
+  // Return ABI Uint32
   load 0
-  // Convert to bytes (uint64)
-  itob
-  // Only use the last 4 bytes
-  extract 4 0
+  abi-encode-u32
+  abi-log
 
-  concat
-  log
+  int 1
+  return
+
+uint64_demo:
+  txna ApplicationArgs 1
+  abi-decode-u64
+  store 0
+
+  // Return ABI Unit64
+  load 0
+  abi-encode-u64
+  abi-log
 
   int 1
   return
 
 byte_demo:
   txna ApplicationArgs 1
+  abi-decode-byte
   store 0
 
   // Return
-  byte 0x151f7c75
   load 0
-  concat
-  log
+  abi-encode-byte
+  abi-log
+
+  int 1
+  return
+
+string_demo:
+  txna ApplicationArgs 1
+  abi-decode-string
+  store 0
+
+  load 0
+  abi-encode-string
+  abi-log
 
   int 1
   return
@@ -227,7 +204,6 @@ tuple_demo:
   continue:
 
   // Return
-  byte 0x151f7c75
   byte 0x0000
   int 1
   load 5
@@ -235,39 +211,77 @@ tuple_demo:
   setbyte
   load 5
   concat
-  concat
-  log
+  abi-log
 
   int 1
   return
 
 byte_array_demo:
-  // Get length of array
-  txna ApplicationArgs 1
-  int 0
-  extract_uint16
-  store 0
-
   // Get bytes
   txna ApplicationArgs 1
-  int 2
-  load 0
-  int 2
-  +
-  substring3
-  store 1
+  abi-decode-bytes
+  store 0
 
   // Return
-  byte 0x151f7c75
-  byte 0x0000
+  load 0
+  abi-encode-bytes
+  abi-log
+
   int 1
+  return
+
+uint8_list_demo:
+  // Get first uint8
+  txna ApplicationArgs 1
+  int 0
+  abi-list-u8-get
+  store 0
+
+  // Get second uint8
+  txna ApplicationArgs 1
+  int 1
+  abi-list-u8-get
+  store 1
+
+  // Get third uint8
+  txna ApplicationArgs 1
+  int 2
+  abi-list-u8-get
+  store 2
+
+  // Construct uint8 list and push values
+  byte 0x
+  load 0
+  abi-list-u8-push
   load 1
-  len
-  setbyte
+  abi-list-u8-push
+  load 2
+  abi-list-u8-push
+  abi-log
+
+  int 1
+  return
+
+uint32_list_demo:
+  // Get first uint32
+  txna ApplicationArgs 1
+  int 0
+  abi-list-u32-get
+  store 0
+
+  // Get second uint32
+  txna ApplicationArgs 1
+  int 1
+  abi-list-u32-get
+  store 1
+
+  // Construct uint32 list and push values
+  byte 0x
+  load 0
+  abi-list-u32-push
   load 1
-  concat
-  concat
-  log
+  abi-list-u32-push
+  abi-log
 
   int 1
   return

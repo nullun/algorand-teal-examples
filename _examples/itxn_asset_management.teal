@@ -1,0 +1,300 @@
+#pragma version 8
+
+// This is for demonstration purposes only
+// Do not use in production
+txn Sender
+global CreatorAddress
+==
+assert
+
+// deploy()void
+method "appl_deploy()void"
+
+// appl_update()void
+method "appl_update()void"
+
+// appl_delete()void
+method "appl_delete()void"
+
+// create(name,unitname,total,decimals)asset_id
+method "itxn_create(byte[32],byte[8],uint64,uint64)uint64"
+
+// config(asset_id)void
+method "itxn_config(asset)void"
+
+// freeze(asset_id,target)void
+method "itxn_freeze(asset,account)void"
+
+// revoke(asset_id,target,amount)remaining
+method "itxn_revoke(asset,account)void"
+
+// destroy(asset_id)bool
+method "itxn_destroy(asset)void"
+
+// optin(asset_id)void
+method "itxn_optin(asset)void"
+
+// send(asset_id,target,amount)remaining
+method "itxn_send(asset,account,uint64)void"
+
+// Which method was called
+txna ApplicationArgs 0
+match appl_deploy appl_update_or_delete appl_update_or_delete itxn_create itxn_config itxn_freeze itxn_revoke itxn_destroy itxn_optin itxn_send
+err
+
+// Deploy
+// method "appl_deploy()void"
+appl_deploy:
+  txn ApplicationID
+  !
+  return
+
+// Update or Delete
+// method "appl_update()void"
+// method "appl_delete()void"
+appl_update_or_delete:
+  txn OnCompletion
+  int UpdateApplication
+  ==
+  txn OnCompletion
+  int DeleteApplication
+  ==
+  ||
+  return
+
+// Asset Create
+// Create a new asset, providing a name, unitname, total, and decimals
+// method "itxn_create(byte[32],byte[8],uint64,uint64)uint64"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_create:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_CREATE
+  itxn_begin
+
+  int acfg
+  itxn_field TypeEnum
+
+  byte "Demo Asset"
+  itxn_field ConfigAssetName
+
+  byte "DA"
+  itxn_field ConfigAssetUnitName
+
+  int 100
+  itxn_field ConfigAssetTotal
+
+  int 2
+  itxn_field ConfigAssetDecimals
+
+  txn Sender
+  itxn_field AssetReceiver
+
+  // TODO need to dupn 4 CurrentApplicationAddress into Manager, Reserve, Freeze, Clawback
+
+  itxn_submit
+  // example: ITXN_ASSET_CREATE
+
+  int 1
+  return
+
+// Asset Config
+// Make changes to the mutable fields of the asset
+// method "itxn_config(asset)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_config:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_CONFIG
+  itxn_begin
+
+  int acfg
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field ConfigAsset
+
+  // TODO need to dupn 4 CurrentApplicationAddress into Manager, Reserve, Freeze, Clawback
+
+  itxn_submit
+  // example: ITXN_ASSET_CONFIG
+
+  int 1
+  return
+
+// Asset Freeze
+// Prevent an account from transferring the assets
+// method "itxn_freeze(asset,account)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_freeze:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_FREEZE
+  itxn_begin
+
+  int afrz
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field XferAsset
+
+  txn Accounts 1
+  itxn_field FreezeAssetAccount
+
+  // Flip the current account frozen state
+  txn Accounts 1
+  txn Assets 0
+  asset_holding_get AssetFrozen
+  assert
+  !
+  itxn_field FreezeAssetFrozen
+
+  itxn_submit
+  // example: ITXN_ASSET_FREEZE
+
+  int 1
+  return
+
+// Asset Revoke
+// Revoke an amount of assets from an account
+// method "itxn_revoke(asset,account)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_revoke:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_REVOKE
+  itxn_begin
+
+  int axfer
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field XferAsset
+
+  // Any amount lower or equal to their holding can be revoked
+  // Here we use the accounts entire asset balance
+  txn Accounts 1
+  txn Assets 0
+  asset_holding_get AssetBalance
+  assert
+  itxn_field AssetAmount
+
+  txn Accounts 1
+  itxn_field AssetSender
+
+  global CurrentApplicationAddress
+  itxn_field AssetReceiver
+
+  itxn_submit
+  // example: ITXN_ASSET_REVOKE
+
+  int 1
+  return
+
+// Asset Destroy
+// Destroying an asset requires the manager to be holding the total supply
+// method "itxn_destroy(asset)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_destroy:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_DESTROY
+  itxn_begin
+
+  int acfg
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field XferAsset
+
+  itxn_submit
+  // example: ITXN_ASSET_DESTROY
+
+  int 1
+  return
+
+// OptIn Asset Transfer
+// Send 0 units of an asset to itself
+// method "itxn_optin(asset)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_optin:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_OPTIN
+  itxn_begin
+
+  int axfer
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field XferAsset
+
+  int 0
+  itxn_field AssetAmount
+
+  global CurrentApplicationAddress
+  itxn_field AssetReceiver
+
+  itxn_submit
+  // example: ITXN_ASSET_OPTIN
+
+  int 1
+  return
+
+// Asset Transfer
+// Send an amount of an asset to a recipient
+// method "itxn_send(asset,account,uint64)void"
+// The actual code below doesn't properly handle the ABI method
+// arguments as it's for demonstration purposes only
+itxn_send:
+  txn OnCompletion
+  int NoOp
+  ==
+  assert
+
+  // example: ITXN_ASSET_TRANSFER
+  itxn_begin
+
+  int axfer
+  itxn_field TypeEnum
+
+  txn Assets 0
+  itxn_field XferAsset
+
+  txn Accounts 1
+  itxn_field AssetReceiver
+
+  txn ApplicationArgs 3
+  btoi
+  itxn_field AssetAmount
+
+  itxn_submit
+  // example: ITXN_ASSET_TRANSFER
+
+  int 1
+  return
+

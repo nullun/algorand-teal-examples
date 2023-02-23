@@ -1,0 +1,24 @@
+#pragma version 8
+
+txn ApplicationID
+bz skip_itxn
+
+// example: ITXN_PAYMENT
+itxn_begin
+
+int pay
+itxn_field TypeEnum
+
+int 1000000
+itxn_field Amount
+
+txn Sender
+itxn_field Receiver
+
+itxn_submit
+// example: ITXN_PAYMENT
+
+skip_itxn:
+  int 1
+  return
+

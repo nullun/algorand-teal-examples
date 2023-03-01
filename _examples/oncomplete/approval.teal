@@ -1,0 +1,10 @@
+#pragma version 8
+
+// example: TXN_ONCOMPLETE
+txn OnCompletion
+int NoOp // OptIn, CloseOut, UpdateApplication, or DeleteApplication
+==
+// example: TXN_ONCOMPLETE
+
+return
+

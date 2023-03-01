@@ -1,0 +1,36 @@
+#pragma version 8
+
+// example: APPL_ASSET_BALANCE
+int 0
+int 2
+asset_holding_get AssetBalance
+bnz has_balance
+
+// Reject transaction if no asset balance
+int 0
+return
+
+has_balance:
+//balance value is now on top of the stack
+// example: APPL_ASSET_BALANCE
+pop
+
+// example: APPL_ASSET_PARAM
+int 0
+asset_params_get AssetTotal
+// example: APPL_ASSET_PARAM
+pop
+pop
+
+// example: APPL_CREATED_ASSET_ID
+// Get the created id of the asset created in the first tx
+gaid 0
+// Get the created id of the asset created in the second tx
+int 1
+gaids
+// example: APPL_CREATED_ASSET_ID
+pop
+
+int 1
+return
+

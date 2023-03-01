@@ -1,0 +1,30 @@
+#pragma version 8
+
+txn ApplicationID
+bz deploy
+
+// example: APPL_CHECK_OPTEDIN
+int 0
+txn ApplicationID
+app_opted_in
+// example: APPL_CHECK_OPTEDIN
+pop
+
+// example: APPL_OPTIN
+txn OnCompletion
+int OptIn
+==
+bz not_optin
+
+// Allow OptIn
+int 1
+return
+
+not_optin:
+// additional checks...
+// example: APPL_OPTIN
+
+deploy:
+  int 1
+  return
+

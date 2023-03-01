@@ -1,0 +1,42 @@
+#pragma version 8
+
+// example: GLOBAL_LATEST_TIMESTAMP
+global LatestTimestamp
+byte "StateDate"
+app_global_get
+>=
+// example: GLOBAL_LATEST_TIMESTAMP
+pop
+
+// This example doesn't make much sense in an application, since `txn` will
+// always be an appl and have an `Amount` of zero.
+// example: TXN_AMOUNT
+txn Amount
+// example: TXN_AMOUNT
+pop
+
+// example: TXN_GROUP_SIZE
+global GroupSize
+int 2
+==
+// example: TXN_GROUP_SIZE
+pop
+
+// example: GTXN_TYPE_ENUM
+gtxn 1 TypeEnum
+int pay
+==
+// example: GTXN_TYPE_ENUM
+pop
+
+// example: GTXN_APP_ARGS
+txn GroupIndex
+int 1
+-
+gtxnsa ApplicationArgs 0
+// example: GTXN_APP_ARGS
+pop
+
+int 1
+return
+

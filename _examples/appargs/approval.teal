@@ -1,0 +1,25 @@
+#pragma version 8
+
+// example: TXN_NUM_APP_ARGS
+txn NumAppArgs
+int 4
+==
+// example: TXN_NUM_APP_ARGS
+pop
+
+// example: TXN_APP_ARG_TO_INT
+txna ApplicationArgs 0
+btoi
+// example: TXN_APP_ARG_TO_INT
+pop
+
+// example: TXN_APP_ARGS
+txna ApplicationArgs 1
+byte "claim"
+==
+// example: TXN_APP_ARGS
+assert
+
+int 1
+return
+

@@ -1,0 +1,47 @@
+#pragma version 8
+
+// The order of the branches below don't make much sense in their current
+// design due to various code snippests being used for demonstration only.
+
+// example: APPL_CALL
+byte "myparam"
+txna ApplicationArgs 0
+==
+bz not_myparam
+// handle my_param
+
+not_myparam:
+// handle not_myparam
+// example: APPL_CALL
+
+// example: APPL_UPDATE
+byte "update"
+txna ApplicationArgs 0
+==
+bz not_update
+
+// Only Creator may update
+global CreatorAddress
+txn Sender
+==
+return
+
+not_update:
+// example: APPL_UPDATE
+
+// example: APPL_UPDATE_REJECT
+txn OnCompletion
+int UpdateApplication
+==
+bz not_update
+
+// Reject Update
+int 0
+return
+
+not_update:
+// example: APPL_UPDATE_REJECT
+
+int 1
+return
+

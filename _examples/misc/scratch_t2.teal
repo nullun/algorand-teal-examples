@@ -1,0 +1,12 @@
+#pragma version 8
+
+// example: APPL_GLOAD_T2
+// read the first 
+// transaction's 10th
+// slot of scratch space
+gload 0 10
+// example: APPL_GLOAD_T2
+
+int 1
+return
+

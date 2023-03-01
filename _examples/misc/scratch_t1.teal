@@ -1,0 +1,10 @@
+#pragma version 8
+
+// example: APPL_GLOAD_T1
+int 777
+store 10
+// example: APPL_GLOAD_T1
+
+int 1
+return
+

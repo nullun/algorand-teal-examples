@@ -1,0 +1,78 @@
+#pragma version 8
+
+txn ApplicationID
+bz end
+
+// WRITING STATE
+
+// example: WRITE_GLOBAL_STATE
+byte "GlobalKey"
+int 42
+app_global_put
+// example: WRITE_GLOBAL_STATE
+
+// example: WRITE_OWN_LOCAL_STATE
+int 0
+byte "OwnLocalKey"
+int 1337
+app_local_put
+// example: WRITE_OWN_LOCAL_STATE
+
+// example: WRITE_OTHER_LOCAL_STATE
+txn Accounts 2
+byte "OtherLocalKey"
+int 200
+app_local_put
+// example: WRITE_OTHER_LOCAL_STATE
+
+// READING STATE
+
+// example: READ_GLOBAL_STATE
+byte "GlobalKey"
+app_global_get
+// example READ_GLOBAL_STATE
+pop
+
+// example: READ_LOCAL_STATE
+int 0
+byte "OwnLocalState"
+app_local_get
+// example: READ_LOCAL_STATE
+pop
+
+// READ STATE EX
+
+// example: READ_OWN_LOCAL_STATE_EX
+int 0
+txn ApplicationID
+byte "OwnLocalState"
+app_local_get_ex
+// example: READ_OWN_LOCAL_STATE_EX
+pop
+pop
+
+// example: READ_LOCAL_STATE_EX
+int 0
+txn ApplicationID
+byte "deposited"
+app_local_get_ex
+bz new_deposit
+// Account has deposited before
+
+new_deposit:
+// Account is making their first deposit
+// example: READ_LOCAL_STATE_EX
+pop
+
+// example: READ_GLOBAL_STATE_EX
+int 0
+byte "GlobalKey"
+app_global_get_ex
+// example: READ_GLOBAL_STATE_EX
+pop
+pop
+
+end:
+  int 1
+  return
+

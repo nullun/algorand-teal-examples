@@ -1,0 +1,26 @@
+#pragma version 8
+
+txn ApplicationID
+bz skip_c2c
+
+// Perform an inner transaction (NoOp appl) to an
+// application provided in the foreign apps array
+// example: ITXN_C2C
+itxn_begin
+
+int appl
+itxn_field TypeEnum
+
+txn Applications 1
+itxn_field ApplicationID
+
+int NoOp
+itxn_field OnCompletion
+
+itxn_submit
+// example: ITXN_C2C
+
+skip_c2c:
+  int 1
+  return
+

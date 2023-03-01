@@ -1,0 +1,74 @@
+#pragma version 8
+
+txn ApplicationID
+bz end
+
+// example: BOX_CREATE
+// 100 byte box created with box_create
+byte "Mykey"
+int 100
+box_create
+// ... OR ...
+// create with a box_put
+byte "Mykey"
+byte "My data values"
+box_put
+// example: BOX_CREATE
+
+// example: BOX_WRITE
+byte "MyKey"
+int 10
+byte "best"
+box_replace
+// example: BOX_WRITE
+
+// example: BOX_GET
+byte "MyKey"
+box_get
+assert //verify that the read occurred and we have a value
+//box contents at the top of the stack
+// example: BOX_GET
+
+// example: BOX_EXTRACT
+byte "BoxA"
+byte "this is a test of a very very very very long string"
+box_put
+
+byte "BoxA"
+int 5
+int 9
+box_extract
+
+byte "is a test"
+==
+assert
+// example: BOX_EXTRACT
+
+// example: BOX_LEN
+byte "BoxA"
+byte "this is a test of a very very very very long string"
+box_put
+
+byte "BoxA"
+box_len
+assert
+
+int 51
+==
+assert
+// example: BOX_LEN
+
+//example: BOX_DELETE
+byte "BoxA"
+byte "this is a test of a very very very very long string"
+box_put
+
+byte "BoxA"
+box_del
+bnz existed
+//example: BOX_DELETE
+
+end:
+  int 1
+  return
+
